@@ -56,6 +56,4 @@ This documentation was reviewed using AI feedback to improve clarity, structure,
 
 ## Architecture Diagram
 
-Add your architecture diagram image here.
-
 ![Architecture Diagram](architecture-diagram.png)
