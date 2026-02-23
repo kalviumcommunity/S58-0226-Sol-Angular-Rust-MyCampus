@@ -1,59 +1,32 @@
-# Understanding Modern Web Architecture with Angular & Rust
+# Concept 2: Building Type-Safe, Fast APIs Using Rust
 
-## Architecture Overview
+In this concept, a Rust backend API was implemented using Axum. The goal was to understand how routes, handlers, typed structs, and async workflows work together to process HTTP requests and return JSON responses.
 
-This assignment explores how a modern full-stack web application works using Angular for the frontend, Rust for backend APIs, and PostgreSQL as the database. Each layer has a specific responsibility, which helps in building scalable, maintainable, and reliable web systems.
+## Implemented Endpoints
 
-Angular is responsible for the user interface. It uses components to display data and handle user interactions like button clicks, form submissions, and navigation between pages. Instead of directly communicating with the backend, Angular components use services. Services handle HTTP requests using Angular’s HttpClient module and keep business logic separate from UI code.
+### GET /api/health
 
-The backend is implemented using Rust frameworks such as Actix or Axum. Rust receives requests from Angular, validates the input data, processes business logic, and interacts with the PostgreSQL database. Rust is known for its speed, memory safety, and strong type system, which reduces runtime errors and improves application stability.
+Returns a simple JSON response to verify the server is running.
 
-PostgreSQL acts as the data storage layer. The Rust backend communicates with the database using tools like SQLx or ORM libraries. Data retrieved from the database is sent back as JSON responses, which Angular uses to update the UI dynamically.
+### POST /api/products
 
-This separation between frontend, backend, and database ensures better performance, easier scaling, and a cleaner architecture.
+Accepts JSON input with:
 
----
+- name (String)
+- quantity (i32)
 
-## End-to-End Request Flow
+The input is deserialized into a typed struct (`CreateProductRequest`), ensuring type safety. The handler processes the request and returns a structured JSON response (`CreateProductResponse`).
 
-When a user interacts with the application, the data flows through several layers:
+## Request–Response Flow
 
-1. User performs an action such as clicking a button or submitting a form
-2. Angular component captures the event
-3. Angular service sends an HTTP request to the backend
-4. Rust API endpoint receives the request
-5. Backend processes validation and business logic
-6. Rust queries the PostgreSQL database
-7. Database returns results to Rust
-8. Rust sends a JSON response back to Angular
-9. Angular updates the user interface automatically
+1. Angular component triggers an action (e.g., form submission).
+2. Angular service sends HTTP POST using HttpClient.
+3. Rust route matches the endpoint.
+4. Rust handler validates JSON into a typed struct.
+5. (Future step) SQLx will insert data into PostgreSQL.
+6. Rust returns JSON response.
+7. Angular updates the UI based on response.
 
-This request-response cycle forms the core of most modern web applications.
+## Why Type Safety Matters
 
----
-
-## Role of Typed-Safe Systems
-
-Angular uses TypeScript, which provides type checking during development. This helps catch errors early and improves code readability and maintainability.
-
-Rust provides strong memory safety guarantees and prevents issues such as memory leaks and null pointer errors. Its strict type system ensures predictable backend behavior.
-
-Using both Angular (TypeScript) and Rust together creates a more stable, secure, and reliable full-stack architecture.
-
----
-
-## Reflection: Importance of Frontend–Backend Separation
-
-Separating frontend and backend improves scalability, maintainability, and performance. Teams can work independently on the user interface and backend logic, making development faster and more organized. It also enhances security because sensitive processing happens on the server instead of the client. Typed-safe technologies like Angular and Rust help reduce runtime bugs and make applications more predictable.
-
----
-
-## AI Feedback Improvement
-
-This documentation was reviewed using AI feedback to improve clarity, structure, and technical accuracy. Minor refinements were made to simplify explanations and improve readability.
-
----
-
-## Architecture Diagram
-
-![Architecture Diagram](architecture-diagram.png)
+Rust enforces strict typing using structs and compile-time checks. This prevents invalid JSON structures from entering business logic and reduces runtime errors. Combined with TypeScript in Angular, this creates a predictable and reliable full-stack system.
